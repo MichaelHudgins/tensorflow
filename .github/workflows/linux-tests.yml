@@ -34,15 +34,25 @@ concurrency:
 
 # Jobs are organized into groups and topologically sorted by dependencies
 jobs:
-  build_linux:
-    runs-on: ubuntu-20.04 # Will become self-hosted
+  build_linux_cpu:
+    runs-on: [self-hosted, linux, cpu]
     container:
       image: tensorflow/build:latest-python3.9 # Lock to specific GCR version, have the action that builds these update this
     steps:
     - name: Checkout code
       uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
-    - name: build 3.9
+    - name: build cpu
       run: |
-        bazel --bazelrc=/usertools/cpu.bazelrc test --config=pycpp
+        bazel --bazelrc=/usertools/cpu.bazelrc test --config=rbe --config=pycpp
+  build_linux_gpu:
+    runs-on: [self-hosted, linux, gpu]
+    container:
+      image: tensorflow/build:latest-python3.9 # Lock to specific GCR version, have the action that builds these update this
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b # v3.2.0
+    - name: build gpu
+      run: |
+        bazel --bazelrc=/usertools/gpu.bazelrc test --config=rbe --config=pycpp
       
       
