@@ -19,12 +19,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/sigbuild-docker-branch.yml'
-      - 'tensorflow/tools/tf_sig_build_dockerfiles/**'
-      - '!tensorflow/tools/tf_sig_build_dockerfiles/README.md'
-    branches:
-      - "r[1-9].[0-9]+"
-
+      - '.github/workflows/sigbuild-docker-arm.yml'
+      - 'ci/offical/containers/linux_arm64/**'
 jobs:
   docker:
     # if: github.repository == 'tensorflow/tensorflow' # Don't do this in forks
@@ -40,8 +36,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
         with:
           platforms: 'arm64,arm'
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8c0edbc76e98fa90f69d9a2c020dcb50019dc325 # v2.2.1
       # -
       #   name: Login to DockerHub
